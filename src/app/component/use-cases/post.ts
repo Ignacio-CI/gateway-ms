@@ -16,7 +16,7 @@ export default function createPost({
     try {
 
       if (path.includes('registration')) {
-        const destinationPath = 'http://localhost:3000/api/v1/user'
+        const destinationPath = 'http://localhost:4000/api/v1/user'
 
         const results = await makeFetch({ params, path: destinationPath, method: 'post'})
 
@@ -24,29 +24,31 @@ export default function createPost({
       }
 
       if (path.includes('auth')) {
-        const authPath = 'http://localhost:3000/api/v1/user/auth'
+        const authPath = 'http://localhost:4000/api/v1/user/auth'
         const authResults = await makeFetch({ params, path: authPath, method: 'post'})
 
-        const results = await authResults.json()
-
-      
+        const results = await authResults.json();
+        console.log(results);
+        
+        if(results.err) throw new Error(results.data)
+        
         const token = results.data[0].email;
 
-        const tokenPath = 'http://localhost:3002/api/v1/token'
+        const tokenPath = 'http://localhost:3001/api/v1/token'
         const tokenResult = await makeFetch({ params: { token }, path: tokenPath, method: 'post'})
         
         const tokenRes = await tokenResult.json()
 
-        setCache({ data: results.data[0], cacheKey: token, cacheConfig })
+        setCache({ data: results.data[0], cacheKey: tokenRes.data, cacheConfig })
         
-        return tokenRes
-        
-        
+        return ({
+            ...results.data[0],
+            token: tokenRes.data
+          }
+        )
       }
-      return params;
     } catch(err) { 
       throw err
     }
-    
   }
 }

@@ -9,7 +9,9 @@ const postEP = async (req, res) => {
     const method = req.method
     
     let results = await post({ params: req.body, path });
+    console.log(results);
     res.json({ err: 0, data: results });
+    
   } catch (err) {
     logger.error(`[EP][POST] ${req.method }: ${err.message}`)
     res.status(403)
