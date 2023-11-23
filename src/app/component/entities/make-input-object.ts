@@ -1,26 +1,18 @@
 export default function makeInputObjectFactory({ md5, sanitize }) {
   return Object.freeze({ inputObj })
-  let localErrorMsgs = {};
-  function inputObj({ params, errorMsgs }){
-    const {
-      username,
-      password,
-      email,
-      role,
-      created = Date.now(),
-      modified = Date.now()
-    } = params;
 
+  function inputObj({ params, errorMsgs }) {
+    const {
+      token
+    } = params;
+    
     return Object.freeze({
-      // username: () => checkUsername({ username, errorMsgs }),
-      // password: () => checkPassword({ password, errorMsgs }),
-      // email: () => checkEmail({ email, errorMsgs }),
-      // role: () => checkRole({ role }),
-      // usernameHash: () => hash({ param: username }),
-      // emailHash: () => hash({ param: email }),
-      // usernamePasswordHash: () => hash({ param: username + password }),
-      created: () => created,
-      modified: () => modified
+      token: () => cleanToken({token})
     })
+  }
+
+  function cleanToken({ token }) {
+    if (token.split(' ')[0] !== 'Bearer') throw new Error ('Invalid token')
+    return token.split(' ')[1];
   }
 }
