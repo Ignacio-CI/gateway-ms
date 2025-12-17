@@ -22,7 +22,7 @@
     "mongodb": "^6.1.0",
     "nodemon": "^3.0.1",
     "redis": "^4.6.10",
-    "sanitize-html": "^2.11.0",
+    "sanitize-html": "^2.12.1",
     "ts-node": "^10.9.1",
     "winston": "^3.11.0"
   },
